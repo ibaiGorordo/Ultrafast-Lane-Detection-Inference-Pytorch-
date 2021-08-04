@@ -6,7 +6,7 @@ model_path = "models/tusimple_18.pth"
 model_type = ModelType.TUSIMPLE
 use_gpu = False
 
-image_path = "test.jpg"
+image_path = "input.jpg"
 
 # Initialize lane detection model
 lane_detector = UltrafastLaneDetector(model_path, model_type, use_gpu)
