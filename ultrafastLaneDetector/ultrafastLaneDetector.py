@@ -180,12 +180,10 @@ class UltrafastLaneDetector():
 
 		# Draw a mask for the current lane
 		if(lanes_detected[1] and lanes_detected[2]):
-			lane_segment_img = np.empty(visualization_img.shape, dtype=visualization_img.dtype)
-			visualization_img_temp = visualization_img.copy()
+			lane_segment_img = visualization_img.copy()
 			
 			cv2.fillPoly(lane_segment_img, pts = [np.vstack((lanes_points[1],np.flipud(lanes_points[2])))], color =(255,191,0))
-			visualization_img_temp = cv2.addWeighted(visualization_img_temp, 0.3, lane_segment_img, 0.7, 0)
-			visualization_img[lane_segment_img!=0] = visualization_img_temp[lane_segment_img!=0]
+			visualization_img = cv2.addWeighted(visualization_img, 0.7, lane_segment_img, 0.3, 0)
 
 		if(draw_points):
 			for lane_num,lane_points in enumerate(lanes_points):
