@@ -72,8 +72,12 @@ class UltrafastLaneDetector():
 
 		# Load the weights from the downloaded model
 		if use_gpu:
-			net = net.cuda()
-			state_dict = torch.load(model_path, map_location='cuda')['model'] # CUDA
+			if torch.backends.mps.is_built():
+				net = net.to("mps")
+				state_dict = torch.load(model_path, map_location='mps')['model'] # Apple GPU
+			else:
+				net = net.cuda()
+				state_dict = torch.load(model_path, map_location='cuda')['model'] # CUDA
 		else:
 			state_dict = torch.load(model_path, map_location='cpu')['model'] # CPU
 
@@ -124,7 +128,8 @@ class UltrafastLaneDetector():
 		input_tensor = input_img[None, ...]
 
 		if self.use_gpu:
-			input_tensor = input_tensor.cuda()
+			if not torch.backends.mps.is_built():
+				input_tensor = input_tensor.cuda()
 
 		return input_tensor
 
